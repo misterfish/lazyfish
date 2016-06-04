@@ -18,7 +18,7 @@ odd-squares = lazy-filter odd, squares # => 1, 9, 25, ...
 result = lazy-take 5 odd-squares # => [1, 9, 25, 49, 81]
 ```
 
-Some more examples:
+Some more examples, using `expect` syntax:
 
 ```livescript
 # --- positive integers:
@@ -71,6 +71,54 @@ expect do
     |> lazy-fold (+), 10
 .to-equal do
     10 + 1 + 2 + 3 + 4 + 5 + 6
+```
+The same examples, written in JavaScript:
+
+```javascript
+
+const preludeLs = require('prelude-ls');
+const odd = preludeLs.odd;
+function square(x) { return x * x; }
+function binaryAdd(x, y) { return x + y; }
+
+// --- nothing is evaluated yet.
+var positiveIntegers = lazyRange(1); // => 1, 2, 3, ...
+// --- still not:
+var squares = lazyMap(square, positiveIntegers); // => 1, 4, 9, ... 
+// --- and still not yet:
+var oddSquares = lazyFilter(odd, squares); // => 1, 9, 25, ...
+// --- now it's finally evaluated:
+var result = lazyTake(5, oddSquares); // => [1, 9, 25, 49, 81]
+
+expect(
+    lazyTake(10, lazyRange(1)
+).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+
+expect(
+    lazyTake(10, lazyMap(square, lazyRange(5)))
+).toEqual(25 36 49 64 81 100 121 144 169 196]);
+
+expect(
+    lazyTake(5, lazyCompact(lazyMap(function (x) {
+        if (even(x)) return x;
+    }, lazyRange(1))))
+).toEqual([2, 4, 6, 8, 10]);
+
+// --- fibonacci:
+expect(
+    lazyAt(33, lazyList(binaryAdd, [1, 1]))
+).toEqual(5702887);
+
+// --- scan:
+expect(
+    lazyTake(6, lazyScan(binaryAdd, 3, lazyRange(5)))
+).toEqual([3, 8, 14, 21, 29, 38]);
+
+// --- fold:
+expect(
+    lazyFold(binaryAdd, 10, lazyTruncate(6, lazyRange(1)))
+).toEqual(10 + 1 + 2 + 3 + 4 + 5 + 6);
+
 ```
 
 © 2016 Allen Haim allen@netherrealm.net
