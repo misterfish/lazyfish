@@ -77,7 +77,21 @@ The same examples, written in JavaScript:
 ```javascript
 
 const preludeLs = require('prelude-ls');
+const lazyfish = require('lazyfish');
+
+const lazyTake = lazyfish.lazyTake;
+const lazyRange = lazyfish.lazyRange;
+const lazyCompact = lazyfish.lazyCompact;
+const lazyMap = lazyfish.lazyMap;
+const lazyFilter = lazyfish.lazyFilter;
+const lazyAt = lazyfish.lazyAt;
+const lazyList = lazyfish.lazyList;
+const lazyScan = lazyfish.lazyScan;
+const lazyFold = lazyfish.lazyFold;
+const lazyTruncate = lazyfish.lazyTruncate;
 const odd = preludeLs.odd;
+const even = preludeLs.even;
+
 function square(x) { return x * x; }
 function binaryAdd(x, y) { return x + y; }
 
