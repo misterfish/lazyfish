@@ -18,7 +18,7 @@ odd-squares = lazy-filter odd, squares # => 1, 9, 25, ...
 result = lazy-take 5 odd-squares # => [1, 9, 25, 49, 81]
 ```
 
-Some more examples, using `expect` syntax:
+Here are some more examples, using `expect` syntax. See the `test` dir for many more.
 
 ```livescript
 # --- positive integers:
@@ -72,7 +72,7 @@ expect do
 .to-equal do
     10 + 1 + 2 + 3 + 4 + 5 + 6
 ```
-The same examples, written in JavaScript:
+Here are the same examples, written in JavaScript. They miss the shine of the Haskell/F#/LiveScript pipelines. If you want to work in JavaScript you might consider using another library with a more native/`lodash` syntax: ```collection.map(xxx).filter(yyy) ... ```.
 
 ```javascript
 
