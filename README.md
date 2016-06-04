@@ -46,6 +46,7 @@ expect do
     lazy-range 1
     |> lazy-map (x) -> x if even x
     |> lazy-compact
+    # --- now eager.
     |> lazy-take 5
 .to-equal do
     [2 4 6 8 10]
@@ -54,6 +55,7 @@ expect do
 expect do
     [1 1]
     |> lazy-list (+)
+    # --- now eager.
     |> lazy-at 33
 .to-equal do
     5_702_887
@@ -62,6 +64,7 @@ expect do
 expect do
     lazy-range 5
     |> lazy-scan (+), 3
+    # --- now eager.
     |> lazy-take 6
 .to-equal do
     [3 8 14 21 29 38]
@@ -70,6 +73,7 @@ expect do
 expect do
     lazy-range 1
     |> lazy-truncate 6
+    # --- now eager.
     |> lazy-fold (+), 10
 .to-equal do
     10 + 1 + 2 + 3 + 4 + 5 + 6
