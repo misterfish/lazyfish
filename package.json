@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Functionally oriented lazy lists for ES6. LiveScript recommended but not required.",
   "repository": {},
+  "license": "GPL-3.0",
   "dependencies": {
     "expect": "^1.20.1",
     "fish-lib": "git://github.com/misterfish/fish-lib-node.git",
