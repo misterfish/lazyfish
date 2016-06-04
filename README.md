@@ -30,6 +30,8 @@ expect do
 .to-equal do
     [1 to 10]
 
+square = -> it * it
+
 expect do
     # --- lazy (5, 6, 7, ...)
     lazy-range 5
