@@ -1,0 +1,13 @@
+{
+  "name": "",
+  "version": "0.0.1",
+  "description": "",
+  "repository": {},
+  "dependencies": {
+    "expect": "^1.20.1",
+    "fish-lib": "git://github.com/misterfish/fish-lib-node.git",
+    "jasmine": "^2.4.1",
+    "jasmine-node": "^1.14.5",
+    "prelude-ls": "^1.1.2"
+  }
+}
