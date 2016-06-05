@@ -21,6 +21,11 @@ result = lazy-take 5 odd-squares # => [1, 9, 25, 49, 81]
 Here are some more examples, using `expect` syntax. See the `test` dir for many more.
 
 ```livescript
+
+{ lazy-take, lazy-range, lazy-compact, lazy-map, lazy-filter, 
+lazy-at, lazy-list, lazy-scan, lazy-fold, lazy-truncate, } = require 'lazyfish'
+{ odd, even, } = require 'prelude-ls'
+
 # --- positive integers:
 expect do
     # --- lazy (1, 2, 3, ...)
