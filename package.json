@@ -5,7 +5,7 @@
   "repository": {},
   "license": "GPL-3.0",
   "dependencies": {
-    "fish-lib": "git://github.com/misterfish/fish-lib-node.git",
+    "fish-lib": "^0.9.4",
     "prelude-ls": "^1.1.2"
   },
   "devDependencies": {
