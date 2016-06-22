@@ -1,6 +1,6 @@
 {
   "name": "lazyfish",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Functionally oriented lazy lists for ES6. LiveScript recommended but not required.",
   "repository": {},
   "license": "GPL-3.0",
