@@ -97,9 +97,7 @@ expect do
 .to-equal do
     10 + 1 + 2 + 3 + 4 + 5 + 6
 ```
-Here are the same examples, written in JavaScript. They miss the shine of the F#/LiveScript-style pipelines. If you want to work in JavaScript you might consider using another library with a more familiar native-style syntax:
-
-```collection.map(xxx).filter(yyy) ... ```.
+Here are the same examples, written in JavaScript. They miss the shine of the F#/LiveScript-style pipelines. If you want to work in JavaScript you might consider using another library with a more familiar native-style syntax.
 
 ```javascript
 
