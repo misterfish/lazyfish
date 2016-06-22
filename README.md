@@ -32,6 +32,8 @@ lazy-range 1
 
 Add an `expect do` and a `.to-equal do` and you have declarative tests.
 
+See the examples directory to understand all the available functions.
+
 ```livescript
 
 { lazy-take, lazy-range, lazy-compact, lazy-map, lazy-filter, 
