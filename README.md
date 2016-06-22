@@ -5,6 +5,8 @@ Functionally oriented lazy lists and transducers for ES6.
 
 The API is largely modelled on @gkz's prelude-ls (https://github.com/gkz/prelude-ls), with some deviations.
 
+This software is intended to be fit for a particular purpose. Why the hell do you think I wrote it? :D
+
 The basic idea is a lazy list, like this:
 
 ```livescript
