@@ -10,17 +10,27 @@ This software is intended to be fit for a particular purpose. Why the hell do yo
 The basic idea is a lazy list, like this:
 
 ```livescript
+# --- assume `square` to be a function which squares its input and `odd` to be a function which returns true if fed an odd integer.
 # --- nothing is evaluated yet.
 positive-integers = lazy-range 1 # => 1, 2, 3, ...
 # --- still not:
-squares = lazy-map (-> it * it), positive-integers # => 1, 4, 9, ... 
+squares = lazy-map square, positive-integers # => 1, 4, 9, ... 
 # --- and still not yet:
 odd-squares = lazy-filter odd, squares # => 1, 9, 25, ...
 # --- now it's finally evaluated:
 result = lazy-take 5 odd-squares # => [1, 9, 25, 49, 81]
 ```
 
-Here are some more examples, using `expect` syntax. See the `test` dir for many more.
+Using F#/LiveScript-style pipelines:
+
+```livescript
+lazy-range 1
+|> lazy-map square
+|> lazy-filter odd
+|> lazy-take 5 # => [1, 9, 25, 49, 81]
+```
+
+Add an `expect do` and a `.to-equal do` and you have declarative tests.
 
 ```livescript
 
