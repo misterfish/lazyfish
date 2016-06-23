@@ -7,11 +7,10 @@ The API is largely modelled on @gkz's prelude-ls (https://github.com/gkz/prelude
 
 This software is intended to be fit for a particular purpose. Why the hell do you think I wrote it? :D
 
-The basic idea is a lazy list, like this:
+The basic idea is a lazy list, like this (assume `square` to be a function which squares its input and `odd` to be a function which returns true if its input is an odd integer.)
 
 ```livescript
-# --- assume `square` to be a function which squares its input and `odd` to be a function which returns true if fed an odd integer.
-# --- nothing is evaluated yet.
+# --- nothing is evaluated yet:
 positive-integers = lazy-range 1 # => 1, 2, 3, ...
 # --- still not:
 squares = lazy-map square, positive-integers # => 1, 4, 9, ... 
