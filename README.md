@@ -20,12 +20,12 @@ odd-squares = lazy-filter odd, squares # => 1, 9, 25, ...
 result = lazy-take 5 odd-squares # => [1, 9, 25, 49, 81]
 ```
 
-Using F#/LiveScript-style pipelines:
+Using F#/LiveScript-style pipelines and inline functions:
 
 ```livescript
 lazy-range 1
-|> lazy-map square
-|> lazy-filter odd
+|> lazy-map -> it * it
+|> lazy-filter -> true if it % 2
 |> lazy-take 5 # => [1, 9, 25, 49, 81]
 ```
 
@@ -134,7 +134,7 @@ expect(
 
 expect(
     lazyTake(10, lazyMap(square, lazyRange(5)))
-).toEqual(25 36 49 64 81 100 121 144 169 196]);
+).toEqual([25, 36, 49, 64, 81, 100, 121, 144, 169, 196]);
 
 expect(
     lazyTake(5, lazyCompact(lazyMap(function (x) {
