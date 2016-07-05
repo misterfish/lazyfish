@@ -5,8 +5,6 @@ Functionally oriented lazy lists and transducers for JavaScript. A runtime which
 
 The API is largely modelled on @gkz's prelude-ls (https://github.com/gkz/prelude-ls), with some deviations.
 
-This software is intended to be fit for a particular purpose. Why the hell do you think I wrote it? :D
-
 The basic idea is a lazy list, like this (assume `square` to be a function which squares its input and `odd` to be a function which returns true if its input is an odd integer.)
 
 ```livescript
