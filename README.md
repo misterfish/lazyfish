@@ -1,5 +1,5 @@
 # lazyfish
-Functionally oriented lazy lists and transducers for ES6.
+Functionally oriented lazy lists and transducers for JavaScript. A runtime which supports generators is required, e.g. ES6.
 
 @gkz's LiveScript (https://github.com/gkz/livescript) recommended but not required.
 
