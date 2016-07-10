@@ -1,9 +1,9 @@
 # lazyfish
 Functionally oriented lazy lists and transducers for JavaScript. A runtime which supports generators is required, e.g. ES6.
 
-@gkz's LiveScript (https://github.com/gkz/livescript) recommended but not required.
+LiveScript (https://github.com/gkz/livescript) recommended but not required. The examples are given first in super hip LiveScript and then in JavaScript. 
 
-The API is largely modelled on @gkz's prelude-ls (https://github.com/gkz/prelude-ls), with some deviations.
+The API is largely modelled on prelude-ls (https://github.com/gkz/prelude-ls), with some deviations.
 
 The basic idea is a lazy list, like this (assume `square` to be a function which squares its input and `odd` to be a function which returns true if its input is an odd integer.)
 
@@ -15,21 +15,23 @@ squares = lazy-map square, positive-integers # => 1, 4, 9, ...
 # --- and still not yet:
 odd-squares = lazy-filter odd, squares # => 1, 9, 25, ...
 # --- now it's finally evaluated:
-result = lazy-take 5 odd-squares # => [1, 9, 25, 49, 81]
+five-odd-squares = lazy-take 5 odd-squares # => [1, 9, 25, 49, 81]
 ```
 
-Using F#/LiveScript-style pipelines and inline functions:
+Using pipelines and inline functions:
 
 ```livescript
-lazy-range 1
-|> lazy-map -> it * it
-|> lazy-filter -> true if it % 2
+five-odd-squares = lazy-range 1
+|> lazy-map (x) -> x * x
+|> lazy-filter (x) -> true if x % 2
 |> lazy-take 5 # => [1, 9, 25, 49, 81]
 ```
 
 Add an `expect do` and a `.to-equal do` and you have declarative tests.
 
 See the examples directory to understand all the available functions.
+
+Here are some more examples:
 
 ```livescript
 
@@ -46,6 +48,7 @@ expect do
 .to-equal do
     [1 to 10]
 
+# --- 'it' is the implicit argument.
 square = -> it * it
 
 expect do
@@ -60,7 +63,9 @@ expect do
 
 expect do
     lazy-range 1
+    # --- undefined, 2, undefined, 4, ...
     |> lazy-map (x) -> x if even x
+    # --- filter out undefined.
     |> lazy-compact
     # --- now eager.
     |> lazy-take 5
@@ -70,8 +75,9 @@ expect do
 # --- fibonacci:
 expect do
     [1 1]
+    # --- recursively create infinite list using the two seed values and a function.
     |> lazy-list (+)
-    # --- now eager.
+    # --- take the value at index 33.
     |> lazy-at 33
 .to-equal do
     5_702_887
@@ -79,8 +85,9 @@ expect do
 # --- scan:
 expect do
     lazy-range 5
+    # --- recursively create an infinite list using an existing one, a function, and a seed value.
     |> lazy-scan (+), 3
-    # --- now eager.
+    # --- take the value.
     |> lazy-take 6
 .to-equal do
     [3 8 14 21 29 38]
@@ -88,13 +95,15 @@ expect do
 # --- fold:
 expect do
     lazy-range 1
+    # --- still a lazy list, but will end at 6.
     |> lazy-truncate 6
-    # --- now eager.
+    # --- now eager: fold (reduce) it using the function and the seed value.
     |> lazy-fold (+), 10
 .to-equal do
-    10 + 1 + 2 + 3 + 4 + 5 + 6
+    10 + 1 + 2 + 3 + 4 + 5 + 6 # i.e. 31
 ```
-Here are the same examples, written in JavaScript. They miss the shine of the F#/LiveScript-style pipelines. If you want to work in JavaScript you might consider using another library with a more familiar native-style syntax.
+
+Here are the same examples, written in JavaScript. The order of the arguments probably won't make much sense from a straight JavaScript point of view; if you want to work this way you might consider using another library with a more familiar native-style syntax.
 
 ```javascript
 
@@ -124,7 +133,7 @@ var squares = lazyMap(square, positiveIntegers); // => 1, 4, 9, ...
 // --- and still not yet:
 var oddSquares = lazyFilter(odd, squares); // => 1, 9, 25, ...
 // --- now it's finally evaluated:
-var result = lazyTake(5, oddSquares); // => [1, 9, 25, 49, 81]
+var fiveOddSquares = lazyTake(5, oddSquares); // => [1, 9, 25, 49, 81]
 
 expect(
     lazyTake(10, lazyRange(1)
