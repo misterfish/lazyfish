@@ -1,9 +1,13 @@
 # lazyfish
 Functionally oriented lazy lists and transducers for JavaScript. A runtime which supports generators is required, e.g. ES6.
 
-LiveScript (https://github.com/gkz/livescript) recommended but not required. The examples are given first in super hip LiveScript and then in JavaScript. 
+To install:
 
-The API is largely modelled on prelude-ls (https://github.com/gkz/prelude-ls), with some deviations.
+```
+npm install lazyfish
+```
+
+LiveScript (https://github.com/gkz/livescript) recommended but not required. The examples are given first in super hip LiveScript and then in stodgy old JavaScript. 
 
 The basic idea is a lazy list, like this (assume `square` to be a function which squares its input and `odd` to be a function which returns true if its input is an odd integer.)
 
@@ -35,6 +39,7 @@ Here are some more examples:
 
 ```livescript
 
+expect = require 'expect'
 { lazy-take, lazy-range, lazy-compact, lazy-map, lazy-filter, 
 lazy-at, lazy-list, lazy-scan, lazy-fold, lazy-truncate, } = require 'lazyfish'
 { odd, even, } = require 'prelude-ls'
@@ -72,7 +77,7 @@ expect do
 .to-equal do
     [2 4 6 8 10]
 
-# --- fibonacci:
+# --- obligatory fibonacci:
 expect do
     [1 1]
     # --- recursively create infinite list using the two seed values and a function.
@@ -103,67 +108,71 @@ expect do
     10 + 1 + 2 + 3 + 4 + 5 + 6 # i.e. 31
 ```
 
-Here are the same examples, written in JavaScript. The order of the arguments probably won't make much sense from a straight JavaScript point of view; if you want to work this way you might consider using another library with a more familiar native-style syntax.
+Here are the same examples, written in JavaScript. You can simulate the pipeline style from above using a companion function ```pipeline(xs, f1 [, f2, ...,] )```.
 
 ```javascript
 
-const preludeLs = require('prelude-ls');
-const lazyfish = require('lazyfish');
+const expect = require('expect')
 
-const lazyTake = lazyfish.lazyTake;
-const lazyRange = lazyfish.lazyRange;
-const lazyCompact = lazyfish.lazyCompact;
-const lazyMap = lazyfish.lazyMap;
-const lazyFilter = lazyfish.lazyFilter;
-const lazyAt = lazyfish.lazyAt;
-const lazyList = lazyfish.lazyList;
-const lazyScan = lazyfish.lazyScan;
-const lazyFold = lazyfish.lazyFold;
-const lazyTruncate = lazyfish.lazyTruncate;
-const odd = preludeLs.odd;
-const even = preludeLs.even;
+const {
+    lazyTake, lazyRange, lazyCompact, lazyMap, lazyFilter,
+    lazyAt, lazyList, lazyScan, lazyFold, lazyTruncate,
+} = require('lazyfish')
 
-function square(x) { return x * x; }
-function binaryAdd(x, y) { return x + y; }
+const { odd, even, } = require('prelude-ls')
+
+const square	= x => x * x
+const binaryAdd = (x, y) => x + y
+const pipeline  = function (...args) {
+    return args.reduce((a, b) => b(a))
+}
 
 // --- nothing is evaluated yet.
-var positiveIntegers = lazyRange(1); // => 1, 2, 3, ...
+var positiveIntegers = lazyRange(1) // => 1, 2, 3, ...
 // --- still not:
-var squares = lazyMap(square, positiveIntegers); // => 1, 4, 9, ... 
+var squares = lazyMap(square, positiveIntegers) // => 1, 4, 9, ... 
 // --- and still not yet:
-var oddSquares = lazyFilter(odd, squares); // => 1, 9, 25, ...
+var oddSquares = lazyFilter(odd, squares) // => 1, 9, 25, ...
 // --- now it's finally evaluated:
-var fiveOddSquares = lazyTake(5, oddSquares); // => [1, 9, 25, 49, 81]
+var fiveOddSquares = lazyTake(5, oddSquares) // => [1, 9, 25, 49, 81]
 
-expect(
-    lazyTake(10, lazyRange(1)
-).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+expect(pipeline(
+    lazyRange(1),
+    lazyTake(10)
+)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
-expect(
-    lazyTake(10, lazyMap(square, lazyRange(5)))
-).toEqual([25, 36, 49, 64, 81, 100, 121, 144, 169, 196]);
+expect(pipeline(
+    lazyRange(5),
+    lazyMap(square),
+    lazyTake(10)
+)).toEqual([25, 36, 49, 64, 81, 100, 121, 144, 169, 196])
 
-expect(
-    lazyTake(5, lazyCompact(lazyMap(function (x) {
-        if (even(x)) return x;
-    }, lazyRange(1))))
-).toEqual([2, 4, 6, 8, 10]);
+expect(pipeline(
+    lazyRange(1),
+    lazyMap(x => even(x)? x : undefined),
+    lazyCompact,
+    lazyTake(5)
+)).toEqual([2, 4, 6, 8, 10])
 
-// --- fibonacci:
-expect(
-    lazyAt(33, lazyList(binaryAdd, [1, 1]))
-).toEqual(5702887);
+// --- obligatory fibonacci:
+expect(pipeline(
+    lazyList(binaryAdd, [1, 1]),
+    lazyAt(33)
+)).toEqual(5702887)
 
 // --- scan:
-expect(
-    lazyTake(6, lazyScan(binaryAdd, 3, lazyRange(5)))
-).toEqual([3, 8, 14, 21, 29, 38]);
+expect(pipeline(
+    lazyRange(5),
+    lazyScan(binaryAdd, 3),
+    lazyTake(6)
+)).toEqual([3, 8, 14, 21, 29, 38])
 
 // --- fold:
-expect(
-    lazyFold(binaryAdd, 10, lazyTruncate(6, lazyRange(1)))
-).toEqual(10 + 1 + 2 + 3 + 4 + 5 + 6);
-
+expect(pipeline(
+    lazyRange(1),
+    lazyTruncate(6),
+    lazyFold(binaryAdd, 10)
+)).toEqual(10 + 1 + 2 + 3 + 4 + 5 + 6)
 ```
 
 © 2016 Allen Haim allen@netherrealm.net
